@@ -8,6 +8,7 @@
         <th>Name</th>
         <th>Semester</th>
         <th>Enrolled students</th>
+        <th>Roster</th>
       </tr>
     </thead>
     <tbody>
@@ -17,6 +18,7 @@
           <td><%= course.name %></td>
           <td><%= course.semester %></td>
           <td><%= course.enrollments.size %></td>
+          <td><%= link_to course.code, course_enrollments_path(course) %></td>
         </tr>
       <% end %>
     </tbody>

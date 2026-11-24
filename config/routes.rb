@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :students
-  resources :courses
+  resources :courses do
+    resources :enrollments, only: [ :index, :create, :destroy ]
+  end
   resource :profile, only: [ :edit, :update ]
   resource :session
   resources :passwords, param: :token
