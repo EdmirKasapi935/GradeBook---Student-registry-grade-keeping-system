@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :students
   resources :courses
   resource :profile, only: [ :edit, :update ]
   resource :session
