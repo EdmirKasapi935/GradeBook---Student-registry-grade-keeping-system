@@ -1,0 +1,14 @@
+<h1><%= @course.code %>: <%= @course.name %></h1>
+<p class="text-muted"><%= @course.semester %></p>
+
+<% if @course.catalog_data.present? %>
+  <h5>Catalog data</h5>
+  <p><%= @course.catalog_data %></p>
+<% end %>
+
+<div class="d-flex gap-2 mt-4">
+  <%= link_to "Edit", edit_course_path(@course), class: "btn btn-secondary" %>
+  <%= button_to "Delete", @course, method: :delete, class: "btn btn-danger",
+        form: { data: { turbo_confirm: "Delete this course and all its enrollments?" } } %>
+  <%= link_to "Back to courses", courses_path, class: "btn btn-link" %>
+</div>
