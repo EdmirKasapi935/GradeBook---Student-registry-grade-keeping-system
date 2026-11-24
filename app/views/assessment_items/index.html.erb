@@ -1,0 +1,49 @@
+<h1><%= @course.code %>: <%= @course.name %></h1>
+<p class="text-muted"><%= @course.semester %> · Assessment items</p>
+
+<%= link_to "New assessment item", new_course_assessment_item_path(@course), class: "btn btn-primary mb-3" %>
+
+<% if @assessment_items.any? %>
+  <table class="table table-striped align-middle">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Weight</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @assessment_items.each do |item| %>
+        <tr>
+          <td><%= item.title %></td>
+          <td><%= number_to_percentage(item.weight * 100, precision: 1, strip_insignificant_zeros: true) %></td>
+          <td class="text-end">
+            <%= link_to "Edit", edit_course_assessment_item_path(@course, item), class: "btn btn-sm btn-outline-secondary" %>
+            <%= button_to "Delete", course_assessment_item_path(@course, item), method: :delete,
+                  class: "btn btn-sm btn-outline-danger",
+                  form: { style: "display:inline", data: { turbo_confirm: "Delete this assessment item?" } } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th>Total</th>
+        <th><%= number_to_percentage(@course.total_weight * 100, precision: 1, strip_insignificant_zeros: true) %></th>
+        <th></th>
+      </tr>
+    </tfoot>
+  </table>
+
+  <% unless @course.weights_complete? %>
+    <div class="alert alert-warning">
+      The weights of this course add up to
+      <%= number_to_percentage(@course.total_weight * 100, precision: 1, strip_insignificant_zeros: true) %>.
+      They should add up to 100%.
+    </div>
+  <% end %>
+<% else %>
+  <p>No assessment items yet.</p>
+<% end %>
+
+<%= link_to "Back to course", course_path(@course) %>

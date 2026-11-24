@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
+  get "assessment_items/index"
+  get "assessment_items/new"
+  get "assessment_items/edit"
   resources :students
   resources :courses do
     resources :enrollments, only: [ :index, :create, :destroy ]
+    resources :assessment_items, except: [ :show ]
   end
   resource :profile, only: [ :edit, :update ]
   resource :session

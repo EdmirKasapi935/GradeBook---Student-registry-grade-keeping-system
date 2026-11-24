@@ -8,6 +8,7 @@
 
 <div class="d-flex gap-2 mt-4">
   <%= link_to "Students on this course", course_enrollments_path(@course), class: "btn btn-primary" %>
+  <%= link_to "Assessment items", course_assessment_items_path(@course), class: "btn btn-primary" %>
   <%= link_to "Edit", edit_course_path(@course), class: "btn btn-secondary" %>
   <%= button_to "Delete", @course, method: :delete, class: "btn btn-danger",
         form: { data: { turbo_confirm: "Delete this course and all its enrollments?" } } %>
