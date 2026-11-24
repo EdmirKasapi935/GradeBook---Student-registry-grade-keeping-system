@@ -15,4 +15,5 @@ Rails.application.routes.draw do
 
   get "instructor/dashboard", to: "instructor#dashboard", as: :instructor_dashboard
   get "student/dashboard",    to: "student#dashboard",    as: :student_dashboard
+  get "student/courses/:id", to: "student#course_grades", as: :student_course
 end
