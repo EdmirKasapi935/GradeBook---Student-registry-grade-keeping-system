@@ -25,10 +25,24 @@
   </head>
 
   <body>
-    <nav class="navbar bg-light border-bottom mb-4">
+    <nav class="navbar navbar-expand bg-light border-bottom mb-4">
       <div class="container">
         <%= link_to "Gradebook", root_path, class: "navbar-brand" %>
-        <span>
+
+        <% if authenticated? %>
+          <ul class="navbar-nav me-auto">
+            <% if Current.user.instructor? %>
+              <li class="nav-item"><%= link_to "Dashboard", instructor_dashboard_path, class: "nav-link" %></li>
+              <li class="nav-item"><%= link_to "Courses", courses_path, class: "nav-link" %></li>
+              <li class="nav-item"><%= link_to "Students", students_path, class: "nav-link" %></li>
+              <li class="nav-item"><%= link_to "Personal info", edit_profile_path, class: "nav-link" %></li>
+            <% else %>
+              <li class="nav-item"><%= link_to "My courses", student_dashboard_path, class: "nav-link" %></li>
+            <% end %>
+          </ul>
+        <% end %>
+
+        <span class="navbar-text">
           <% if authenticated? %>
             Logged as <%= Current.user.role %>: <%= Current.user.full_name %>,
             <%= button_to "click here to logout", session_path, method: :delete,

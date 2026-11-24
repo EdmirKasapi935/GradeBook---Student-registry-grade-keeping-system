@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_24_170545) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_24_175749) do
   create_table "assessment_items", force: :cascade do |t|
     t.integer "course_id", null: false
     t.string "title"
@@ -41,6 +41,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_24_170545) do
     t.index ["student_id"], name: "index_enrollments_on_student_id"
   end
 
+  create_table "grades", force: :cascade do |t|
+    t.integer "enrollment_id", null: false
+    t.integer "assessment_item_id", null: false
+    t.integer "score"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assessment_item_id"], name: "index_grades_on_assessment_item_id"
+    t.index ["enrollment_id", "assessment_item_id"], name: "index_grades_on_enrollment_id_and_assessment_item_id", unique: true
+    t.index ["enrollment_id"], name: "index_grades_on_enrollment_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "ip_address"
@@ -65,5 +76,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_24_170545) do
   add_foreign_key "courses", "users", column: "instructor_id"
   add_foreign_key "enrollments", "courses"
   add_foreign_key "enrollments", "users", column: "student_id"
+  add_foreign_key "grades", "assessment_items"
+  add_foreign_key "grades", "enrollments"
   add_foreign_key "sessions", "users"
 end

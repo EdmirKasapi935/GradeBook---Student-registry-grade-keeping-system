@@ -1,0 +1,4 @@
+<h1>Edit grade for <%= @enrollment.student.full_name %></h1>
+<p class="text-muted"><%= @course.code %>, <%= @course.semester %></p>
+<%= render "form", grade: @grade %>
+<%= link_to "Back to grades", course_enrollment_grades_path(@course, @enrollment), class: "d-inline-block mt-3" %>

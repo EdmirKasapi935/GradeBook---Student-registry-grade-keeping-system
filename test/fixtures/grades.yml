@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  enrollment: one
+  assessment_item: one
+  score: 1
+
+two:
+  enrollment: two
+  assessment_item: two
+  score: 1

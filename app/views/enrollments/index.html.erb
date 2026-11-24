@@ -34,7 +34,7 @@
           <td><%= enrollment.student.full_name %></td>
           <td><%= enrollment.student.email_address %></td>
           <td class="text-end">
-            <span class="text-muted me-2">Grades (coming soon)</span>
+            <%= link_to "Grades", course_enrollment_grades_path(@course, enrollment), class: "btn btn-sm btn-outline-primary" %>
             <%= button_to "Remove", course_enrollment_path(@course, enrollment), method: :delete,
                   class: "btn btn-sm btn-outline-danger",
                   form: { style: "display:inline", data: { turbo_confirm: "Remove this student from the course?" } } %>

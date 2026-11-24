@@ -1,6 +1,11 @@
 class InstructorController < ApplicationController
   before_action :require_instructor
 
+  def dashboard
+    @course_count = Current.user.taught_courses.count
+    @student_count = User.student.count
+  end
+
   def edit
     @user = Current.user
   end

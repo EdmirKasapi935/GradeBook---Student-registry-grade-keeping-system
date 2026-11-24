@@ -1,0 +1,28 @@
+<div class="col-md-6">
+  <% if grade.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% grade.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: [@course, @enrollment, grade] do |f| %>
+    <div class="mb-3">
+      <%= f.label :assessment_item_id, "Assessment", class: "form-label" %>
+      <% if grade.persisted? %>
+        <input type="text" class="form-control" value="<%= grade.assessment_item.title %>" disabled>
+      <% else %>
+        <%= f.collection_select :assessment_item_id, @available_items, :id, :title,
+              { prompt: "Select an assessment" }, class: "form-select" %>
+      <% end %>
+    </div>
+    <div class="mb-3">
+      <%= f.label :score, class: "form-label" %>
+      <%= f.number_field :score, min: 0, max: 120, step: 1, class: "form-control" %>
+    </div>
+    <%= f.submit "Save", class: "btn btn-primary" %>
+  <% end %>
+</div>
