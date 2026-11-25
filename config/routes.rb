@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :assessment_items, except: [ :show ]
   end
   resource :profile, only: [ :edit, :update ]
+  patch "profile/password", to: "profiles#update_password", as: :profile_password
   resource :session
   resources :passwords, param: :token
 

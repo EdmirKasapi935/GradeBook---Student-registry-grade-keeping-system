@@ -20,7 +20,8 @@
     </div>
     <div class="mb-3">
       <%= f.label :semester, class: "form-label" %>
-      <%= f.text_field :semester, class: "form-control", placeholder: "Fall 2025" %>
+      <%= f.select :semester, (Course.semester_options + [course.semester]).compact.uniq,
+            { prompt: "Select a semester" }, class: "form-select" %>
     </div>
     <div class="mb-3">
       <%= f.label :catalog_data, "Catalog data (optional)", class: "form-label" %>

@@ -1,0 +1,19 @@
+<% if @total_pages > 1 %>
+  <nav aria-label="Pages">
+    <ul class="pagination">
+      <li class="page-item <%= "disabled" if @page == 1 %>">
+        <%= link_to "Previous", url_for(page: @page - 1), class: "page-link" %>
+      </li>
+
+      <% (1..@total_pages).each do |number| %>
+        <li class="page-item <%= "active" if number == @page %>">
+          <%= link_to number, url_for(page: number), class: "page-link" %>
+        </li>
+      <% end %>
+
+      <li class="page-item <%= "disabled" if @page == @total_pages %>">
+        <%= link_to "Next", url_for(page: @page + 1), class: "page-link" %>
+      </li>
+    </ul>
+  </nav>
+<% end %>

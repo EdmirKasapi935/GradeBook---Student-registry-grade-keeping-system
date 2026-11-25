@@ -18,31 +18,48 @@
   <p>All students are already enrolled in this course.</p>
 <% end %>
 
-<h5>Enrolled students (<%= @enrollments.size %>)</h5>
+<h5>Enrolled students (<%= @total_count %>)</h5>
 <% if @enrollments.any? %>
-  <table class="table table-striped align-middle">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @enrollments.each do |enrollment| %>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
         <tr>
-          <td><%= enrollment.student.full_name %></td>
-          <td><%= enrollment.student.email_address %></td>
-          <td class="text-end">
-            <%= link_to "Grades", course_enrollment_grades_path(@course, enrollment), class: "btn btn-sm btn-outline-primary" %>
-            <%= button_to "Remove", course_enrollment_path(@course, enrollment), method: :delete,
-                  class: "btn btn-sm btn-outline-danger",
-                  form: { style: "display:inline", data: { turbo_confirm: "Remove this student from the course?" } } %>
-          </td>
+          <th>Name</th>
+          <th>Email</th>
+          <% @assessment_items.each do |item| %>
+            <th class="text-center">
+              <%= item.title %><br>
+              <small class="text-muted"><%= number_to_percentage(item.weight * 100, precision: 1, strip_insignificant_zeros: true) %></small>
+            </th>
+          <% end %>
+          <th class="text-center">Overall</th>
+          <th></th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @enrollments.each do |enrollment| %>
+          <% grades_by_item = enrollment.grades.index_by(&:assessment_item_id) %>
+          <tr>
+            <td><%= enrollment.student.full_name %></td>
+            <td><%= enrollment.student.email_address %></td>
+            <% @assessment_items.each do |item| %>
+              <td class="text-center">
+                <%= grades_by_item[item.id]&.score || content_tag(:span, "–", class: "text-muted") %>
+              </td>
+            <% end %>
+            <td class="text-center"><strong><%= enrollment.overall_grade %></strong></td>
+            <td class="text-end text-nowrap">
+              <%= link_to "Grades", course_enrollment_grades_path(@course, enrollment), class: "btn btn-sm btn-outline-primary" %>
+              <%= button_to "Remove", course_enrollment_path(@course, enrollment), method: :delete,
+                    class: "btn btn-sm btn-outline-danger",
+                    form: { style: "display:inline", data: { turbo_confirm: "Remove this student from the course?" } } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <%= render "shared/pagination" %>
 <% else %>
   <p>No students enrolled yet.</p>
 <% end %>

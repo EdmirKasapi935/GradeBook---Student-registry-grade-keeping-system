@@ -1,0 +1,24 @@
+<% stats = course.grade_statistics %>
+<div class="modal fade" id="stats-<%= course.id %>" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><%= course.code %>: <%= course.name %> (<%= course.semester %>)</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <% if stats %>
+          <table class="table mb-0">
+            <tr><th>Count</th><td><%= stats[:count] %></td></tr>
+            <tr><th>Min</th><td><%= stats[:min] %></td></tr>
+            <tr><th>Max</th><td><%= stats[:max] %></td></tr>
+            <tr><th>Mean</th><td><%= stats[:mean] %></td></tr>
+            <tr><th>Standard deviation</th><td><%= stats[:std_dev] %></td></tr>
+          </table>
+        <% else %>
+          <p class="mb-0">No grades have been entered for this course yet.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

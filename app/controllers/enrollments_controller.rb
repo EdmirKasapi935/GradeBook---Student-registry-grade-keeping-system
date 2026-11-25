@@ -3,7 +3,10 @@ class EnrollmentsController < ApplicationController
   before_action :set_course
 
   def index
-    @enrollments = @course.enrollments.includes(:student).joins(:student).order("users.surname, users.name")
+    @enrollments = paginate(
+      @course.enrollments.includes(:student, :grades).joins(:student).order("users.surname, users.name")
+    )
+    @assessment_items = @course.assessment_items.order(:created_at)
     @available_students = User.student.where.not(id: @course.student_ids).order(:surname, :name)
   end
 

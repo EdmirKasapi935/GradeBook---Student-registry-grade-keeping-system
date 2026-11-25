@@ -1,28 +1,48 @@
 <h1 class="mb-4">Courses offered</h1>
 
 <% if @courses.any? %>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Code</th>
-        <th>Name</th>
-        <th>Semester</th>
-        <th>Enrolled students</th>
-        <th>Roster</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @courses.each do |course| %>
+  <div data-controller="semester-filter">
+    <div class="mb-3 col-md-3">
+      <label for="semester-select" class="form-label">Semester</label>
+      <select id="semester-select" class="form-select"
+              data-semester-filter-target="select"
+              data-action="change->semester-filter#filter">
+        <option value="">All semesters</option>
+        <% @semesters.each do |semester| %>
+          <option value="<%= semester %>"><%= semester %></option>
+        <% end %>
+      </select>
+    </div>
+
+    <table class="table table-striped align-middle">
+      <thead>
         <tr>
-          <td><%= course.code %></td>
-          <td><%= course.name %></td>
-          <td><%= course.semester %></td>
-          <td><%= course.enrollments.size %></td>
-          <td><%= link_to course.code, course_enrollments_path(course) %></td>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Semester</th>
+          <th>Enrolled students</th>
+          <th></th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @courses.each do |course| %>
+          <tr data-semester-filter-target="row" data-semester="<%= course.semester %>">
+            <td><%= link_to course.code, course_enrollments_path(course) %></td>
+            <td><%= course.name %></td>
+            <td><%= course.semester %></td>
+            <td><%= course.enrollments.size %></td>
+            <td class="text-end">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#stats-<%= course.id %>">Statistics</a>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <% @courses.each do |course| %>
+    <%= render "statistics_modal", course: course %>
+  <% end %>
 <% else %>
   <p>No courses yet.</p>
 <% end %>

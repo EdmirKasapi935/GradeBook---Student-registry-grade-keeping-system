@@ -3,7 +3,7 @@ class StudentsController < ApplicationController
   before_action :set_student, only: %i[show edit update destroy]
 
   def index
-    @students = User.student.order(:surname, :name)
+    @students = paginate(User.student.order(:surname, :name))
   end
 
   def show
@@ -46,6 +46,6 @@ class StudentsController < ApplicationController
   end
 
   def student_params
-    params.expect(user: [ :name, :surname, :email_address, :password, :password_confirmation ])
+    params.expect(user: User::EDITABLE_FIELDS)
   end
 end
